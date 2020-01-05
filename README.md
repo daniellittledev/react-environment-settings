@@ -17,10 +17,22 @@ import * as React from 'react'
 
 import MyComponent from 'react-environment-settings'
 
-class Example extends React.Component {
+function getConfig(environment: string) {
+  return [
+    { file: `settings.json`, optional: false },
+    { file: `settings.${environment}.json`, optional: true }
+  ];
+}
+
+class App extends React.Component {
   render () {
     return (
-      <MyComponent />
+      <AppSettingsLoader
+        environmentUrl={"environment.json"}
+        getConfig={getConfig}
+        loading={() => <div>Loading settings...</div>}
+        ready={s => <pre>{JSON.stringify(s, null, 2)}</pre>}
+      />
     )
   }
 }

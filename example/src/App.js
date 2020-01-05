@@ -1,13 +1,25 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import ExampleComponent from 'react-environment-settings'
+import AppSettingsLoader from "react-environment-settings";
+
+function getConfig(environment) {
+  return [
+    { file: `settings.json`, optional: false },
+    { file: `settings.${environment}.json`, optional: true }
+  ];
+}
 
 export default class App extends Component {
-  render () {
+  render() {
     return (
-      <div>
-        <ExampleComponent text='Modern React component module' />
+      <div className="root">
+        <AppSettingsLoader
+          environmentUrl={"environment.json"}
+          getConfig={getConfig}
+          loading={() => <div>Loading settings...</div>}
+          ready={s => <pre>{JSON.stringify(s, null, 2)}</pre>}
+        />
       </div>
-    )
+    );
   }
 }

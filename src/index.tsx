@@ -1,23 +1,40 @@
-/**
- * @class ExampleComponent
- */
+import {
+  SettingsConfig,
+  SettingsFileConfig,
+  Json,
+  loadSettings
+} from "./loadSettings";
 
-import * as React from 'react'
+import {
+  FC,
+  FunctionComponent,
+  ReactElement,
+  useEffect,
+  useState
+} from "react";
 
-import styles from './styles.css'
-
-export type Props = { text: string }
-
-export default class ExampleComponent extends React.Component<Props> {
-  render() {
-    const {
-      text
-    } = this.props
-
-    return (
-      <div className={styles.test}>
-        Example Component: {text}
-      </div>
-    )
-  }
+interface AppSettingsLoaderProps<T> {
+  environmentUrl: string;
+  getConfig: (environment: string) => SettingsConfig;
+  loading: () => ReactElement;
+  ready: (settings: T) => ReactElement;
 }
+
+type AppSettingsLoader<T = any> = FunctionComponent<AppSettingsLoaderProps<T>>;
+
+const AppSettingsLoaderComponent: FC<AppSettingsLoaderProps<Json>> = props => {
+  const [settings, setSettings] = useState<Json | null>(null);
+
+  useEffect(() => {
+    loadSettings(props.environmentUrl, props.getConfig).then(s =>
+      setSettings(s)
+    );
+  }, []);
+
+  return settings ? props.ready(settings) : props.loading();
+};
+
+const AppSettingsLoader = AppSettingsLoaderComponent;
+export default AppSettingsLoader as AppSettingsLoader;
+
+export { Json, SettingsFileConfig, SettingsConfig };

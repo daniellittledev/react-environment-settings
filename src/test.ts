@@ -1,7 +1,7 @@
-import ExampleComponent from './'
+import AppSettingsLoader from './'
 
-describe('ExampleComponent', () => {
+describe('AppSettingsLoader', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(AppSettingsLoader).toBeTruthy()
   })
 })
