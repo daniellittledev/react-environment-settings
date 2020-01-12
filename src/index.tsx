@@ -1,40 +1,37 @@
-import {
-  SettingsConfig,
-  SettingsFileConfig,
-  Json,
-  loadSettings
-} from "./loadSettings";
+import { loadSettings } from "./loadSettings";
 
-import {
-  FC,
-  FunctionComponent,
-  ReactElement,
-  useEffect,
-  useState
-} from "react";
+import { ReactElement, useEffect, useState, PropsWithChildren } from "react";
+import { State, loading } from "./state";
+import * as React from "react";
 
 interface AppSettingsLoaderProps<T> {
-  environmentUrl: string;
-  getConfig: (environment: string) => SettingsConfig;
+  settingsUrl: string;
   loading: () => ReactElement;
   ready: (settings: T) => ReactElement;
+  error?: (error: Error) => ReactElement;
 }
 
-type AppSettingsLoader<T = any> = FunctionComponent<AppSettingsLoaderProps<T>>;
-
-const AppSettingsLoaderComponent: FC<AppSettingsLoaderProps<Json>> = props => {
-  const [settings, setSettings] = useState<Json | null>(null);
+function AppSettingsLoaderComponent<T>(
+  props: PropsWithChildren<AppSettingsLoaderProps<T>>
+) {
+  const [settings, setSettings] = useState<State<T>>(loading());
 
   useEffect(() => {
-    loadSettings(props.environmentUrl, props.getConfig).then(s =>
-      setSettings(s)
-    );
+    loadSettings<T>(props.settingsUrl).then(s => setSettings(s));
   }, []);
 
-  return settings ? props.ready(settings) : props.loading();
-};
+  switch (settings.type) {
+    case "Loading":
+      return props.loading();
+    case "Success":
+      return props.ready(settings.data as T);
+    case "Error":
+      return props.error ? (
+        props.error(settings.error)
+      ) : (
+        <div>Error loading settings</div>
+      );
+  }
+}
 
-const AppSettingsLoader = AppSettingsLoaderComponent;
-export default AppSettingsLoader as AppSettingsLoader;
-
-export { Json, SettingsFileConfig, SettingsConfig };
+export default AppSettingsLoaderComponent;

@@ -1,0 +1,11 @@
+{
+  "environment": "development",
+  "default": {
+    "api": "defaultapi.com",
+    "siteName": "Example Site"
+  },
+  "development": {
+    "api": "developmentapi.com",
+    "banner": "You are in the Development Environment"
+  }
+}

@@ -1,8 +1,6 @@
 {
-  "short_name": "react-environment-settings",
-  "name": "react-environment-settings",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "short_name": "Example",
+  "name": "Example",
+  "start_url": ".",
+  "display": "standalone"
 }
