@@ -1,6 +1,6 @@
 {
   "name": "react-environment-settings",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Load environment settings for react asynchronously at runtime",
   "author": "daniellittledev",
   "license": "MIT",
