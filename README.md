@@ -13,29 +13,28 @@ npm install --save react-environment-settings
 ## Usage
 
 ```tsx
-import * as React from 'react'
+import React from "react";
 
-import MyComponent from 'react-environment-settings'
+import AppSettingsLoader from "react-environment-settings";
+import settingsAssetUrl from "./settings.json.txt";
 
-function getConfig(environment: string) {
-  return [
-    { file: `settings.json`, optional: false },
-    { file: `settings.${environment}.json`, optional: true }
-  ];
+interface Settings {
+  data: string;
 }
 
-class App extends React.Component {
-  render () {
-    return (
-      <AppSettingsLoader
-        environmentUrl={"environment.json"}
-        getConfig={getConfig}
+const App = () => {
+  return (
+    <div className="root">
+      <AppSettingsLoader<Settings>
+        settingsUrl={settingsAssetUrl}
         loading={() => <div>Loading settings...</div>}
         ready={s => <pre>{JSON.stringify(s, null, 2)}</pre>}
       />
-    )
-  }
-}
+    </div>
+  );
+};
+
+export default App;
 ```
 
 ## License
